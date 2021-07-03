@@ -5,7 +5,7 @@
   "preprocess": "preemphasis",
   "postprocess": "inv_preemphasis",
   "global_gain_scale": 0.55,
-  "sample_rate": 22050,
+  "sample_rate": 16000,
   "silence_threshold": 2,
   "num_mels": 80,
   "fmin": 125,

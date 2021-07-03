@@ -2,20 +2,7 @@
 
 script_dir=$(cd $(dirname ${BASH_SOURCE:-$0}); pwd)
 VOC_DIR=$script_dir/../../
-
-# Directory that contains all wav files
-# **CHANGE** this to your database path
-db_root=~/data/LJSpeech-1.1/wavs/
-
-spk="lj"
 dumpdir=dump
-
-# train/dev/eval split
-dev_size=10
-eval_size=10
-# Maximum size of train/dev/eval data (in hours).
-# set small value (e.g. 0.2) for testing
-limit=1000000
 
 # waveform global gain normalization scale
 global_gain_scale=0.55
@@ -25,7 +12,7 @@ stop_stage=0
 
 # Hyper parameters (.json)
 # **CHANGE** here to your own hparams
-hparams=conf/gaussian_wavenet_demo.json
+hparams=conf/gaussian_wavenet.json
 
 # Batch size at inference time.
 inference_batch_size=32
@@ -64,18 +51,6 @@ feat_typ="logmelspectrogram"
 data_root=data/$spk                        # train/dev/eval splitted data
 dump_org_dir=$dumpdir/$spk/$feat_typ/org   # extracted features (pair of <wave, feats>)
 dump_norm_dir=$dumpdir/$spk/$feat_typ/norm # extracted features (pair of <wave, feats>)
-
-if [ ${stage} -le 0 ] && [ ${stop_stage} -ge 0 ]; then
-    echo "stage 0: train/dev/eval split"
-    if [ -z $db_root ]; then
-      echo "ERROR: DB ROOT must be specified for train/dev/eval splitting."
-      echo "  Use option --db-root \${path_contains_wav_files}"
-      exit 1
-    fi
-    python $VOC_DIR/mksubset.py $db_root $data_root \
-      --train-dev-test-split --dev-size $dev_size --test-size $eval_size \
-      --limit=$limit
-fi
 
 if [ ${stage} -le 1 ] && [ ${stop_stage} -ge 1 ]; then
     echo "stage 1: Feature Generation"
