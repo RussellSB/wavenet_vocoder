@@ -30,12 +30,13 @@ def low_cut_filter(x, fs, cutoff=70):
 
 
 def load_wav(path):
-    sr, x = wavfile.read(path)
+    #sr, x = wavfile.read(path)
+    x, sr = librosa.load(path, hparams.sample_rate)
     signed_int16_max = 2**15
     if x.dtype == np.int16:
         x = x.astype(np.float32) / signed_int16_max
-    if sr != hparams.sample_rate:
-        x = librosa.resample(x, sr, hparams.sample_rate)
+    #if sr != hparams.sample_rate:
+    #    x = librosa.resample(x, sr, hparams.sample_rate)
     x = np.clip(x, -1.0, 1.0)
     return x
 
