@@ -841,11 +841,12 @@ def train_loop(device, model, data_loaders, optimizer, writer, checkpoint_dir=No
                     return ema
 
             # log per epoch
-            averaged_loss = running_loss / len(data_loader)
+            temp = max(1, len(data_loader)) # avoids divide by 0 bug
+            averaged_loss = running_loss / temp
             writer.add_scalar("{} loss (per epoch)".format(phase),
                               averaged_loss, global_epoch)
             print("Step {} [{}] Loss: {}".format(
-                global_step, phase, running_loss / len(data_loader)))
+                global_step, phase, running_loss / temp))
 
         global_epoch += 1
     return ema
