@@ -10,9 +10,6 @@ global_gain_scale=0.55
 stage=0
 stop_stage=0
 
-# Hyper parameters (.json)
-# **CHANGE** here to your own hparams
-hparams=conf/gaussian_wavenet.json
 
 # Batch size at inference time.
 inference_batch_size=32
@@ -78,7 +75,8 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
     echo "stage 2: WaveNet training"
     python $VOC_DIR/train.py --dump-root $dump_norm_dir --preset $hparams \
       --checkpoint-dir=$expdir \
-      --log-event-path=tensorboard/${expname}
+      --log-event-path=tensorboard/${expname} \
+      --checkpoint=${expdir}/checkpoint_latest.pth
 fi
 
 if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
