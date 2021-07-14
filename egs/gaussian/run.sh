@@ -7,9 +7,8 @@ dumpdir=dump
 # waveform global gain normalization scale
 global_gain_scale=0.55
 
-stage=0
-stop_stage=0
-
+stage=1
+stop_stage=2
 
 # Batch size at inference time.
 inference_batch_size=32
@@ -77,20 +76,4 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
       --checkpoint-dir=$expdir \
       --log-event-path=tensorboard/${expname} \
       --checkpoint=${expdir}/checkpoint_latest.pth
-fi
-
-if [ ${stage} -le 3 ] && [ ${stop_stage} -ge 3 ]; then
-    echo "stage 3: Synthesis waveform from WaveNet"
-    if [ -z $eval_checkpoint ]; then
-      eval_checkpoint=$expdir/checkpoint_latest.pth
-    fi
-    name=$(basename $eval_checkpoint)
-    name=${name/.pth/}
-    for s in $dev_set $eval_set;
-    do
-      dst_dir=$expdir/generated/$name/$s
-      python $VOC_DIR/evaluate.py $dump_norm_dir/$s $eval_checkpoint $dst_dir \
-        --preset $hparams --hparams="batch_size=$inference_batch_size" \
-        --num-utterances=$eval_max_num_utt
-    done
 fi
