@@ -60,5 +60,5 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
     fi
     
     python $VOC_DIR/evaluate.py $dump_norm_dir $eval_checkpoint $outdir \
-            --preset $hparams
+            --preset $hparams --hparams="batch_size=32"
 fi
