@@ -59,6 +59,6 @@ if [ ${stage} -le 2 ] && [ ${stop_stage} -ge 2 ]; then
       eval_checkpoint=$expdir/checkpoint_latest.pth
     fi
     
-    CUDA_VISIBLE_DEVICES="0,1" python $VOC_DIR/evaluate.py $dump_norm_dir $eval_checkpoint $outdir \
-            --preset $hparams --hparams="batch_size=32, num_workers=0"
+    python $VOC_DIR/evaluate.py $dump_norm_dir $eval_checkpoint $outdir \
+            --preset $hparams --hparams="batch_size=1" 
 fi
